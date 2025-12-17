@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Bookshelf</title>
     <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <header>
@@ -13,7 +14,7 @@
             <input type="text" id="" placeholder="Search books...">
             <button type="submit">Search</button>
         </form>
-        <a href="./tbr.html">My TBR</a>
+        <a href="./tbr.html" class="tbr-link">My TBR</a>
     </header>
 
     <main>
@@ -21,11 +22,11 @@
             <h2>Welcome to your personal bookshelf!</h2>
             <p>Let's begin by adding some books to your To-Be-Read list!</p>
 
-            <!-- Empty div for popluating books -->
-            <div></div>
+            <!-- Empty ul for popluating books -->
+            <ul id="results" class="grid"></ul>
         </div>
     </main>
 
-
+    <script type="module" src="./js/index.js"></script>
 </body>
 </html>

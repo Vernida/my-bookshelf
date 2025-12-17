@@ -34,5 +34,17 @@ This project incorporates the following required concepts:
 To run this project locally, you will need:
 
 - **Node.js** (with npm installed)
+    Verify installation by running:
+    node --version
+    npm --version
 - A code editor such as **VS Code**
 - A terminal (Git Bash or similar)
+
+---
+
+### Steps
+
+1. Clone or download this repository
+2. Save the project in a directory named: **my-bookshelf**
+3. Navigate into the project directory via the terminal
+4. Install dependencies: **npm install**

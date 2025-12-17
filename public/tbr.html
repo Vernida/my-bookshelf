@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My TBR List</title>
     <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <header>
@@ -13,16 +14,17 @@
             <input type="text" id="" placeholder="Search books...">
             <button type="submit">Search</button>
         </form>
-        <a href="./tbr.html" id="">My TBR</a>
+        <a href="./tbr.html" class="tbr-link">My TBR</a>
     </header>
 
     <main>
         <section>
             <h2>My To-Be-Read List</h2>
-            <!-- Empty div for popluating books -->
-            <div></div>
+            <!-- Empty ul for popluating books -->
+            <ul id="tbrList" class="grid"></ul>
         </section>
     </main>
     
+    <script type="module" src="./js/index.js"></script>
 </body>
 </html>

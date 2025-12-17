@@ -1,2 +1,69 @@
 @import url("./reset.css");
 
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(0, 120, 205);
+    color: white;
+    position: sticky;
+    padding: .75rem 1.75rem;
+}
+
+header h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+header form {
+    flex: 1;
+    display: flex;
+    max-width: 400px;
+    margin: 0.5rem;
+}
+
+header input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background-color: white;
+}
+
+header button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: rgb(0, 95, 165);
+    color: white;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: rgb(0, 72, 128);
+}
+
+header .tbr-link {
+    /* margin-left: 1rem; */
+    color: white;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+}
+
+/* Mobile layout adjustments */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+    }
+}
