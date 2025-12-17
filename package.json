@@ -1,0 +1,25 @@
+{
+  "name": "my-bookshelf",
+  "version": "1.0.0",
+  "description": "A responsive web application for creating a digital bookshelf to manage your personal To-Be-Read",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vernida/my-bookshelf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Vernida/my-bookshelf/issues"
+  },
+  "homepage": "https://github.com/Vernida/my-bookshelf#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
