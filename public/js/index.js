@@ -4,13 +4,33 @@ const searchForm = document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("results");
 const tbrListElement = document.getElementById("tbrList");
+const tbrCountElement = document.getElementById("tbrCount");
 
 let tbrList = [];
 
 async function fetchTBR() {
-    const response = await fetch("/api/tbr");
-    tbrList = await response.json();
-    renderTBR();
+    try {
+        const response = await fetch("/api/tbr");
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch TBR List");
+        }
+        
+        tbrList = await response.json();
+
+        if (tbrCountElement) {
+            tbrCountElement.textContent = `(${tbrList.length})`;
+        }
+
+        renderTBR();
+    } catch (error) {
+        console.error("Error loading TBR list:", error);
+
+        if (tbrCountElement) {
+            tbrCountElement.textContent = "(?)";
+        }
+    }
+    
 }
 
 
@@ -93,21 +113,39 @@ function renderResults(books) {
 }
 
 async function addToTBR(book) {
-    await fetch("/api/tbr", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(book)
-    });
+    try {
+        const response = await fetch("/api/tbr", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(book)
+        });
 
-    fetchTBR();
+        if (!response.ok) {
+            throw new Error("Failed to add book to TBR");
+        }
+
+        await fetchTBR();
+    } catch (error) {
+        console.error("Error adding book:", error);
+        alert("Sorry — we couldn't add that book right now.");
+    }
 }
 
 async function removeFromTBR(bookId) {
-    await fetch(`/api/tbr/${bookId}`, {
-        method: "DELETE"
-    });
+    try {
+        const response = await fetch(`/api/tbr/${bookId}`, {
+            method: "DELETE"
+        });
 
-    fetchTBR();
+        if (!response.ok) {
+            throw new Error("Failed to remove book from TBR");
+        }
+
+        await fetchTBR();
+    } catch (error) {
+        console.error("Error removing book:", error);
+        alert("Sorry — we couldn't remove that book right now.");
+    }
 }
 
 function renderTBR() {

@@ -59,6 +59,11 @@ header .tbr-link {
     font-weight: bold;
 }
 
+header .tbr-link #tbrCount {
+    margin-left: 0.25rem;
+    color:#ff9900;
+}
+
 main {
     max-width: 1200px;
     margin: auto;
