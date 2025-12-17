@@ -13,6 +13,8 @@ searchForm.addEventListener("submit", async (event) => {
     searchBooks(query);
 });
 
+//Fetch books from Google API
+
 async function searchBooks(query) {
     const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=25`;
 
@@ -21,6 +23,8 @@ async function searchBooks(query) {
 
     renderResults(data.items || []);
 }
+
+//Search Results
 
 function renderResults(books) {
     resultsList.innerHTML = "";
