@@ -108,7 +108,7 @@ li button {
     color: white;
     border: none;
     border-radius: 5px;
-    margin-top: 0.5rem;
+    margin-top: auto;
     padding: 0.35rem 0.7rem;
     cursor: pointer;
 }
@@ -121,12 +121,21 @@ button.remove {
     background-color: darkred;
 }
 
+button.remove:hover {
+    background-color: maroon;
+}
+
 
 
 
 /* Mobile layout adjustments */
 @media (max-width: 600px) {
+    /* Stack header/nav for small screens */
     header {
         flex-direction: column;
+    }
+    /* Make grid items slightly narrower to better fit on smaller divices*/
+    ul.grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
 }

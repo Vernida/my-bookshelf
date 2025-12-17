@@ -61,7 +61,7 @@ function renderResults(books) {
                 <strong>${info.title || "Untitled"}</strong>
                 ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
             </div>
-            <button>
+            <button class="${alreadyInTBR ? "remove" : ""}">
             ${alreadyInTBR ? "Remove" : "Add to TBR"}
             </button>
         `;
@@ -74,9 +74,11 @@ function renderResults(books) {
             if (isInTBR) {
                 removeFromTBR(book.id);
                 button.textContent = "Add to TBR";
+                button.classList.remove("remove");
             } else {
                 addToTBR(book);
                 button.textContent = "Remove";
+                button.classList.add("remove");
             }
         });
 
@@ -113,7 +115,7 @@ function renderTBR() {
             ${info.imageLinks?.thumbnail ? `<img src="${info.imageLinks.thumbnail}" />` : ""}
             <strong>${info.title}</strong>
             ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
-            <button type="button">Remove</button>
+            <button type="button" class="remove">Remove</button>
         `;
 
         li.querySelector("button").addEventListener("click", () => {
