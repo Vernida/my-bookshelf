@@ -19,6 +19,17 @@ if (searchForm && searchInput && resultsList) {
     });
 }
 
+if (searchForm && searchInput && !resultsList) {
+    searchForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        window.location.href = `index.html?q=${encodeURIComponent(query)}`;
+    });
+}
+
 //Fetch books from Google API
 
 async function searchBooks(query) {
@@ -50,17 +61,23 @@ function renderResults(books) {
                 <strong>${info.title || "Untitled"}</strong>
                 ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
             </div>
-            <button ${alreadyInTBR ? "disabled" : ""}>
-            ${alreadyInTBR ? "Added" : "Add to TBR"}
+            <button>
+            ${alreadyInTBR ? "Remove" : "Add to TBR"}
             </button>
         `;
 
         const button = li.querySelector("button");
         
         button.addEventListener("click", () => {
-            addToTBR(book);
-            button.textContent = "Added";
-            button.disabled = true;    
+            const isInTBR = tbrList.some((b) => b.id === book.id);
+
+            if (isInTBR) {
+                removeFromTBR(book.id);
+                button.textContent = "Add to TBR";
+            } else {
+                addToTBR(book);
+                button.textContent = "Remove";
+            }
         });
 
         resultsList.appendChild(li);
@@ -72,6 +89,13 @@ function addToTBR(book) {
         return;
     tbrList.push(book);
     localStorage.setItem("tbrList", JSON.stringify(tbrList));
+}
+
+function removeFromTBR(bookId) {
+    tbrList = tbrList.filter((book) => book.id !== bookId);
+    localStorage.setItem("tbrList", JSON.stringify(tbrList));
+    renderTBR();
+    console.log("Removing:", bookId);
 }
 
 function renderTBR() {
@@ -89,10 +113,25 @@ function renderTBR() {
             ${info.imageLinks?.thumbnail ? `<img src="${info.imageLinks.thumbnail}" />` : ""}
             <strong>${info.title}</strong>
             ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
+            <button type="button">Remove</button>
         `;
+
+        li.querySelector("button").addEventListener("click", () => {
+            removeFromTBR(book.id);
+        })
 
         tbrListElement.appendChild(li);
     });
 }
 
 renderTBR();
+
+if (resultsList) {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+
+    if (query) {
+        searchInput.value = query;
+        searchBooks(query);
+    }
+}
