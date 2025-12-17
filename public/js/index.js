@@ -5,7 +5,13 @@ const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("results");
 const tbrListElement = document.getElementById("tbrList");
 
-let tbrList = JSON.parse(localStorage.getItem("tbrList")) || [];
+let tbrList = [];
+
+async function fetchTBR() {
+    const response = await fetch("/api/tbr");
+    tbrList = await response.json();
+    renderTBR();
+}
 
 
 if (searchForm && searchInput && resultsList) {
@@ -86,18 +92,22 @@ function renderResults(books) {
     });
 }
 
-function addToTBR(book) {
-    if (tbrList.find((b) => b.id === book.id))
-        return;
-    tbrList.push(book);
-    localStorage.setItem("tbrList", JSON.stringify(tbrList));
+async function addToTBR(book) {
+    await fetch("/api/tbr", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(book)
+    });
+
+    fetchTBR();
 }
 
-function removeFromTBR(bookId) {
-    tbrList = tbrList.filter((book) => book.id !== bookId);
-    localStorage.setItem("tbrList", JSON.stringify(tbrList));
-    renderTBR();
-    console.log("Removing:", bookId);
+async function removeFromTBR(bookId) {
+    await fetch(`/api/tbr/${bookId}`, {
+        method: "DELETE"
+    });
+
+    fetchTBR();
 }
 
 function renderTBR() {
@@ -126,7 +136,7 @@ function renderTBR() {
     });
 }
 
-renderTBR();
+fetchTBR();
 
 if (resultsList) {
     const params = new URLSearchParams(window.location.search);
