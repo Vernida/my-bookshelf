@@ -42,6 +42,7 @@ function renderResults(books) {
         const info = book.volumeInfo;
 
         const li = document.createElement("li");
+        const alreadyInTBR = tbrList.some((b) => b.id === book.id);
 
         li.innerHTML = `
             ${info.imageLinks?.thumbnail ? `<img src="${info.imageLinks.thumbnail}" alt="${info.title}" />` : ""}
@@ -49,11 +50,17 @@ function renderResults(books) {
                 <strong>${info.title || "Untitled"}</strong>
                 ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
             </div>
-            <button>Add to TBR</button>
+            <button ${alreadyInTBR ? "disabled" : ""}>
+            ${alreadyInTBR ? "Added" : "Add to TBR"}
+            </button>
         `;
 
-        li.querySelector("button").addEventListener("click", () => {
+        const button = li.querySelector("button");
+        
+        button.addEventListener("click", () => {
             addToTBR(book);
+            button.textContent = "Added";
+            button.disabled = true;    
         });
 
         resultsList.appendChild(li);
