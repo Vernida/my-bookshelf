@@ -63,7 +63,7 @@ body {
 
 /* Ensure consistent focus styles for accessibility */
 :focus-visible {
-    outline: 2px dashed #000; /* Customize to suit your design */
+    outline: 2px solid #000; /* Customize to suit your design */
 }
 
 /* Remove all animations and transitions for users who prefer reduced motion */

@@ -3,11 +3,26 @@
 const searchForm = document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("results");
+
 const tbrListElement = document.getElementById("tbrList");
 const tbrCountElement = document.getElementById("tbrCount");
 
+const completedListElement = document.getElementById("completedList");
+const completedCountElement = document.getElementById("completedCount");
+
 let tbrList = [];
 
+//Search Books on Google API
+async function searchBooks(query) {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=25`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    renderResults(data.items || []);
+}
+
+//Fetch TBR
 async function fetchTBR() {
     try {
         const response = await fetch("/api/tbr");
@@ -33,42 +48,67 @@ async function fetchTBR() {
     
 }
 
+// //Fetch Completed
+// async function fetchCompleted() {
+//     const response = await fetch("/api/completed");
+//     const completedList = await response.json();
 
-if (searchForm && searchInput && resultsList) {
-    searchForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+//     renderCompleted(completedList);
+//     updateCompletedCount(completedList)
+// }
 
-        const query = searchInput.value.trim();
-        if (!query) return;
+//Add to TBR
+async function addToTBR(book) {
+    try {
+        const response = await fetch("/api/tbr", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(book)
+        });
 
-        searchBooks(query);
-    });
+        if (!response.ok) {
+            throw new Error("Failed to add book to TBR");
+        }
+
+        await fetchTBR();
+    } catch (error) {
+        console.error("Error adding book:", error);
+        alert("Sorry — we couldn't add that book right now.");
+    }
 }
 
-if (searchForm && searchInput && !resultsList) {
-    searchForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+//Remove from TBR
+async function removeFromTBR(bookId) {
+    try {
+        const response = await fetch(`/api/tbr/${bookId}`, {
+            method: "DELETE"
+        });
 
-        const query = searchInput.value.trim();
-        if (!query) return;
+        if (!response.ok) {
+            throw new Error("Failed to remove book from TBR");
+        }
 
-        window.location.href = `index.html?q=${encodeURIComponent(query)}`;
-    });
+        await fetchTBR();
+    } catch (error) {
+        console.error("Error removing book:", error);
+        alert("Sorry — we couldn't remove that book right now.");
+    }
 }
 
-//Fetch books from Google API
+// //Mark Completed
+// async function markAsCompleted(book) {
+//     await fetch("/api/completed", {
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify(book)
+//     });
 
-async function searchBooks(query) {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=25`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    renderResults(data.items || []);
-}
+//     fetchTBR();
+//     fetchCompleted();
+// }
 
 //Search Results
-
 function renderResults(books) {
     if (!resultsList) 
         return;
@@ -90,6 +130,8 @@ function renderResults(books) {
             <button class="${alreadyInTBR ? "remove" : ""}">
             ${alreadyInTBR ? "Remove" : "Add to TBR"}
             </button>
+            <!-- PRETENDING THIS DOESN'T EXIST
+            <button class="completed">Completed</button> -->
         `;
 
         const button = li.querySelector("button");
@@ -108,46 +150,17 @@ function renderResults(books) {
             }
         });
 
+        // const completedButton = li.querySelector(".completed");
+
+        // completedButton.addEventListener("click", () => {
+        //     markAsCompleted(book);
+        // })
+
         resultsList.appendChild(li);
     });
 }
 
-async function addToTBR(book) {
-    try {
-        const response = await fetch("/api/tbr", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(book)
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to add book to TBR");
-        }
-
-        await fetchTBR();
-    } catch (error) {
-        console.error("Error adding book:", error);
-        alert("Sorry — we couldn't add that book right now.");
-    }
-}
-
-async function removeFromTBR(bookId) {
-    try {
-        const response = await fetch(`/api/tbr/${bookId}`, {
-            method: "DELETE"
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to remove book from TBR");
-        }
-
-        await fetchTBR();
-    } catch (error) {
-        console.error("Error removing book:", error);
-        alert("Sorry — we couldn't remove that book right now.");
-    }
-}
-
+//TBR List
 function renderTBR() {
     if (!tbrListElement)
         return;
@@ -174,7 +187,63 @@ function renderTBR() {
     });
 }
 
+// //Completed List
+// function renderCompleted(completedList) {
+//     if (!completedListElement) return;
+
+//     completedListElement.innerHTML = "";
+
+//     if (completedList.length === 0) {
+//         completedListElement.innerHTML = `<p><em>No books</em></p>`;
+//         return;
+//     }
+    
+//     completedList.forEach((book) => {
+//         const info = book.volumeInfo;
+//         const li = document.createElement("li");
+
+//         li.innerHTML = `
+//             ${info.imageLinks?.thumbnail ? `<img src="${info.imageLinks.thumbnail}" />` : ""}
+//             <strong>${info.title}</strong>
+//             ${info.authors ? `<small>by ${info.authors.join(", ")}</small>` : ""}
+//         `;
+
+//         completedListElement.appendChild(li);
+//     });
+// }
+
+// //Updated Completed List
+// function updateCompletedCount(completedList) {
+//     if (!completedCountElement) return;
+
+//     completedCountElement.textContent = `(${completedList.length})`;
+// }
+
+//Event Listeners
+if (searchForm && searchInput && resultsList) {
+    searchForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        searchBooks(query);
+    });
+}
+
+if (searchForm && searchInput && !resultsList) {
+    searchForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        window.location.href = `index.html?q=${encodeURIComponent(query)}`;
+    });
+}
+
 fetchTBR();
+// fetchCompleted();
 
 if (resultsList) {
     const params = new URLSearchParams(window.location.search);

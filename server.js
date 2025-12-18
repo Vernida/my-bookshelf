@@ -4,7 +4,16 @@ import express from "express";
 const app = express();
 const port = 8080;
 
-let tbrList = [];
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs/promises";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const booksFilePath = path.join(
+    __dirname,
+    "data",
+    "books.json"
+);
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -17,22 +26,60 @@ app.listen(port, () => {
 
 
 // API: Get TBR List
-app.get("/api/tbr", (req, res) => {
-    res.json(tbrList);
+app.get("/api/tbr", async (req, res) => {
+    const bookData = await fs.readFile(booksFilePath);
+    const books = JSON.parse(bookData);
+
+    res.json(books);
 });
 
 //Add book
-app.post("/api/tbr", (req, res) => {
+app.post("/api/tbr", async (req, res) => {
     const book = req.body;
 
-    if (!tbrList.find(b => b.id === book.id)) {
-        tbrList.push(book);
+    const bookData = await fs.readFile(booksFilePath);
+    const books = JSON.parse(bookData);
+
+    if (!books.find(b => b.id === book.id)) {
+        books.push(book);
+
+        await fs.writeFile(booksFilePath, JSON.stringify(books));
     }
-    res.json({success: true});
+
+    res.json(book);
 });
 
 //Remove book
-app.delete("/api/tbr/:id", (req, res) => {
-    tbrList = tbrList.filter(book => book.id !== req.params.id);
+app.delete("/api/tbr/:id", async (req, res) => {
+    const bookData = await fs.readFile(booksFilePath);
+    const books = JSON.parse(bookData);
+
+    const newBookList = books.filter(book => book.id !== req.params.id);
+    await fs.writeFile(booksFilePath, JSON.stringify(newBookList))
+
     res.json({success: true});
 });
+
+
+// ------PRENTENDING THIS DOESN'T EXIST RIGHT NOW -----------------//
+
+
+// //Get Completed list
+// app.get("/api/completed", (req, res) => {
+//     res.json(completedList);
+// });
+
+// //Add to Completed list
+// app.post("/api/completed", (req, res) => {
+//     const book = req.body;
+
+//     //Remove from TBR if it exists
+//     tbrList = tbrList.filter(b => b.id !== book.id);
+
+//     //Prevent duplicates
+//     if (!completedList.find(b => b.id === book.id)) {
+//         completedList.push(book);
+//     }
+
+//     res.json({ success: true });
+// });

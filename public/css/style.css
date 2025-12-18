@@ -143,7 +143,40 @@ button.remove:hover {
     background-color: maroon;
 }
 
+/* .section-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
 
+.section-toggle .arrow {
+    transition: transform 0.2s ease;
+}
+
+.section-toggle[aria-expanded="false"] + ul {
+    display: none;
+}
+
+.section-toggle[aria-expanded="false"] + ul + .empty-message {
+    display: none;
+}
+
+.section-toggle[aria-expanded="true"] .arrow {
+    transform: rotate(180deg);
+}
+
+.list-section {
+    margin-bottom: 2rem;
+}
+
+.empty-message {
+    font-style: italic;
+    color: #666;
+    margin-top: 0.5rem;
+} */
 
 
 /* Mobile layout adjustments */
