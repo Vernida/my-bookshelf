@@ -45,11 +45,9 @@ This project incorporates the following required concepts:
 ## Installation & Setup
 
 To run this project locally, you will need:
-
-- **Node.js** (with npm installed)
-    Verify installation by running:
-    node --version
-    npm --version
+- **Node.js** (with npm installed)  
+    - Verify installation by running:  
+    `node --version` and `npm --version`
 - A code editor such as **VS Code**
 - A terminal (Git Bash or similar)
 
@@ -58,22 +56,21 @@ To run this project locally, you will need:
 ### Steps
 
 1. Clone or download this repository
-2. Save the project in a directory named: **my-bookshelf**
+2. Save the project in a directory named: `my-bookshelf`
 3. Navigate into the project directory via the terminal
-4. Install dependencies: **npm install**
-	- This installs all required dependcies, including nodemon for development.
-5. Running the Application (Command depends on how you want to run it):
-	Option 1: Development Mode (Recommended)
-	Uses nodemon to automatically restart the server on file changes.
+4. Install dependencies: `npm install`
+	- This installs all required dependcies, including nodemon for development
+5. Running the Application (Command depends on how you prefer to run it):
+	
+    - Option 1: Development Mode (Recommended)  
+        Uses nodemon to automatically restart the server on file changes  
+        `npm run dev`
 
-	**npm run dev**
+    - Option 2: Standard Start  
+        Runs the server normally  
+        `npm start`
 
-	Option 2: Standard Start
-	Runs the server normally.
-
-	**npm start**
-
-6. Ctrl + Click the link navigate to: **http://localhost:8080**
+6. Ctrl + Click the link navigate to: http://localhost:8080  
 (If for some reason your terminal has a glitch and won't cooperate with taking you to the link you can always paste the link into your browser directly.)
 
 ---
@@ -90,3 +87,4 @@ To run this project locally, you will need:
 
 - A Completed books list so you can see your achievements in reading
 - Collaspsible sections for the To-Be-Read and Completed lists so they can be viewed on the same page
+- A sort feature such as A-Z, Z-A, Date Added etc. As of now any books added only go in the order they are added.
