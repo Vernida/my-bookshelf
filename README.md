@@ -75,14 +75,6 @@ To run this project locally, you will need:
 
 ---
 
-## Notes
-
-- The TBR list is stored in memory on the server and will reset if the server restarts
-- The UI updates dynamically without page reloads
-- Responsive behavior is handled via CSS Grid and media queries
-
----
-
 ## Future Enhancements
 
 - A Completed books list so you can see your achievements in reading
